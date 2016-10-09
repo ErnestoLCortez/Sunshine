@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -15,7 +17,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new PlaceholderFragment())
+                    .commit();
+        }
+
     }
+
+
 
 
     public static class PlaceholderFragment extends Fragment {
@@ -28,12 +38,16 @@ public class MainActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-            ArrayList<String> fakeData = new ArrayList<>();
+            ArrayList<String> weekForecast = new ArrayList<>();
 
             for(int i = 0; i < 10; i++){
-                fakeData.add("10/0" + i + " - Sunny - " + (i+80) + "/" + (i+60));
+                weekForecast.add("10/0" + i + " - Sunny - " + (i+80) + "/" + (i+60));
             }
 
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, weekForecast);
+
+            ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+            listView.setAdapter(arrayAdapter);
 
             return rootView;
         }
